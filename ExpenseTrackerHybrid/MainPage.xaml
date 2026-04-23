@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ExpenseTrackerHybrid.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30,20" Spacing="20">
+
+            <Label Text="Add Project Expense" 
+                   Style="{StaticResource Headline}" 
+                   HorizontalOptions="Center" />
+
+            <!-- Search Section -->
+            <Label Text="1. Select a Project" FontAttributes="Bold" FontSize="18" />
+
+            <SearchBar x:Name="ProjectSearchBar"
+                       Placeholder="Search projects by name"
+                       SearchButtonPressed="OnSearchButtonPressed"
+                       TextChanged="OnSearchTextChanged" />
+   
+            <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,0,0,10">
+                <CheckBox x:Name="UseDateFilterCheckBox" CheckedChanged="OnSearchDateChanged" />
+                <Label Text="Filter by Date:" VerticalOptions="Center" />
+                <DatePicker x:Name="ProjectSearchDatePicker" DateSelected="OnSearchDateChanged" VerticalOptions="Center" />
+                <Button Text="Clear" Clicked="OnClearDateClicked" Padding="5" HeightRequest="35" VerticalOptions="Center" />
+            </StackLayout>
+
+            <CollectionView x:Name="ProjectsCollectionView"
+                            HeightRequest="150"
+                            SelectionMode="Single"
+                            SelectionChanged="OnProjectSelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10" BackgroundColor="#F0F0F0" Margin="0,5">
+                            <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" />
+                            <Label Text="{Binding Date, StringFormat='{0:yyyy-MM-dd}'}" FontSize="14" TextColor="Gray"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Expense Form Section -->
+            <Label Text="2. Enter Expense Details" FontAttributes="Bold" FontSize="18" />
+
+            <Label x:Name="SelectedProjectLabel" 
+                   Text="Selected Project: None" 
+                   TextColor="DarkBlue" 
+                   FontAttributes="Italic" />
+
+            <DatePicker x:Name="ExpenseDatePicker" />
+            <Entry x:Name="AmountEntry" Placeholder="Amount" Keyboard="Numeric" />
+            <Picker x:Name="CurrencyPicker" Title="Currency">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>USD</x:String>
+                        <x:String>EUR</x:String>
+                        <x:String>GBP</x:String>
+                        <x:String>VND</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            <Picker x:Name="TypePicker" Title="Type of Expense">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Travel</x:String>
+                        <x:String>Equipment</x:String>
+                        <x:String>Materials</x:String>
+                        <x:String>Services</x:String>
+                        <x:String>Software/Licenses</x:String>
+                        <x:String>Labour costs</x:String>
+                        <x:String>Utilities</x:String>
+                        <x:String>Miscellaneous</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            <Picker x:Name="PaymentMethodPicker" Title="Payment Method">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Cash</x:String>
+                        <x:String>Credit Card</x:String>
+                        <x:String>Bank Transfer</x:String>
+                        <x:String>Cheque</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            <Entry x:Name="ClaimantEntry" Placeholder="Claimant" />
+            <Picker x:Name="PaymentStatusPicker" Title="Payment Status">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Paid</x:String>
+                        <x:String>Pending</x:String>
+                        <x:String>Reimbursed</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            <Entry x:Name="DescriptionEntry" Placeholder="Description (Optional)" />
+            <Entry x:Name="LocationEntry" Placeholder="Location (Optional)" />
+
+            <Button Text="Add Expense" 
+                    Clicked="OnAddExpenseClicked"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    HorizontalOptions="Fill" />
+
+            <Label Text="3. Manage Expenses" FontAttributes="Bold" FontSize="18" Margin="0,20,0,0"/>
+            <CollectionView x:Name="ExpensesCollectionView" HeightRequest="350">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10" BackgroundColor="#E8E8E8" Margin="0,5">
+                            <Label Text="{Binding Description, StringFormat='Desc: {0}'}" FontAttributes="Bold"/>
+                            <Label Text="{Binding Amount, StringFormat='Amount: {0}'}" />
+                            <Label Text="{Binding Currency, StringFormat='Currency: {0}'}" />
+                            <Label Text="{Binding DisplayDate, StringFormat='Date: {0}'}" />
+                            <Label Text="{Binding TypeOfExpense, StringFormat='Type: {0}'}" />
+                            <Label Text="{Binding PaymentMethod, StringFormat='Method: {0}'}" />
+                            <Label Text="{Binding PaymentStatus, StringFormat='Status: {0}'}" />
+                            <Label Text="{Binding Claimant, StringFormat='Claimant: {0}'}" />
+                            <Label Text="{Binding Location, StringFormat='Location: {0}'}" />
+                            <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,5,0,0">
+                                <Button Text="Delete" CommandParameter="{Binding .}" Clicked="OnDeleteExpenseClicked" BackgroundColor="Red" TextColor="White" Padding="5" />
+                            </StackLayout>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
+
